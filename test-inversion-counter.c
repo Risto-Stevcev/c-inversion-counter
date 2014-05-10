@@ -4,8 +4,6 @@
 #include "inversion-counter.h"
 
 
-long int *inversions;
-
 void
 array_cmp(int *arr1, int *arr2, int arrlen)
 {
@@ -16,14 +14,12 @@ array_cmp(int *arr1, int *arr2, int arrlen)
 int
 setup_suite1(void)
 {
-    inversions = (long int *) calloc( 1, sizeof( long int ) );
     return 0;
 }
 
 int
 teardown_suite1(void)
 {
-    free( inversions );
     return 0;
 }
 
@@ -35,8 +31,9 @@ test_merge_and_count_suite1(void)
 
     int left[] = {1,2,4,7};
     int right[] = {3,5,19,21};
+    long int inversions;
 
-    merge_and_count( left, 4, right, 4, list, inversions );
+    merge_and_count( left, 4, right, 4, list, &inversions );
     array_cmp( list, sorted_list, 8 );
 }
 
@@ -45,10 +42,10 @@ test_inversion_counter_suite1(void)
 {
     int list[] = {1,4,5,2,9,44,7,12,34};
     int merged_list[] = {1,2,4,5,7,9,12,34,44};
+    long int inversions = 0;
+    inversion_counter( list, 9, &inversions );
 
-    inversion_counter( list, 9, inversions );
-
-    CU_ASSERT( *inversions == 9 );
+    CU_ASSERT( inversions == 6 );
     array_cmp( list, merged_list, 9 );   
 }
 
